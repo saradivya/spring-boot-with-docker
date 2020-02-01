@@ -1,0 +1,5 @@
+Navigate  to your project
+docker build -t <name> . ->. indicates same project location dockerfile
+docker pull mongo
+specify the built image name(spring-boot image and mongo) in docker-compose.yml
+docker-compose up
