@@ -1,7 +1,7 @@
 spring:
   data:
     mongodb:
-      uri:  mongodb://mongodb:27017/sara
+      uri: "mongodb+srv://sara:Divya1998@sprintretroboard.0wvxwjr.mongodb.net/sprintretronotes?retryWrites=true&w=majority&appName=sprintretroboard"
 logging:
     pattern:
       console: '%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n'

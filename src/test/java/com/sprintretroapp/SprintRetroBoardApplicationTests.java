@@ -1,10 +1,10 @@
-package com.esms;
+package com.sprintretroapp;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class EsmsApplicationTests {
+class SprintRetroBoardApplicationTests {
 
 	@Test
 	void contextLoads() {
