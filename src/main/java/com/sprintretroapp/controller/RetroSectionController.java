@@ -34,7 +34,7 @@ public class RetroSectionController {
   }
 
   @PostMapping
-  public Mono<RetroSectionDTO> createSectionForRetroBoard(
+  public Mono<String> createSectionForRetroBoard(
       @RequestBody Mono<RetroSectionDTO> retroSectionDTO) {
     return retroSectionService.createRetroSection(retroSectionDTO);
   }

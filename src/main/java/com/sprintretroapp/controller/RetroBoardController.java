@@ -2,7 +2,6 @@ package com.sprintretroapp.controller;
 
 import com.sprintretroapp.model.RetroBoardDTO;
 import com.sprintretroapp.service.RetroBoardService;
-import com.sprintretroapp.util.AppUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +23,7 @@ public class RetroBoardController {
   }
 
   @PostMapping
-  public Mono<RetroBoardDTO> createSprintRetroBoard(
+  public Mono<String> createSprintRetroBoard(
       @RequestBody Mono<RetroBoardDTO> retroBoardDTO) {
      return retroBoardService.saveRetroBoard(retroBoardDTO);
   }

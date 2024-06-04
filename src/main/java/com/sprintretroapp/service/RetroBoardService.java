@@ -22,7 +22,7 @@ public class RetroBoardService {
 
 
   // Create Sprint Retro Board
-  public Mono<RetroBoardDTO> saveRetroBoard(Mono<RetroBoardDTO> retroBoardDTO) {
+  public Mono<String> saveRetroBoard(Mono<RetroBoardDTO> retroBoardDTO) {
     return retroBoardDTO
         .flatMap(
             retroBoardDTO1 ->
@@ -32,16 +32,17 @@ public class RetroBoardService {
         .flatMap(
             exists ->
                 Boolean.TRUE.equals(exists)
-                    ? Mono.error(new Exception("RetroBoard for this sprint already exist" ))
+                    ? Mono.just("RetroBoard for this sprint already exist")
                     : saveRetroBoard(retroBoardDTO1)));
   }
 
-  private Mono<RetroBoardDTO> saveRetroBoard(RetroBoardDTO retroBoardDTO) {
+  private Mono<String> saveRetroBoard(RetroBoardDTO retroBoardDTO) {
     RetroBoard retroBoard =
         AppUtil.RetroBoardDTOTORetroBoardEntity(retroBoardDTO);
     retroBoard.setSprintBoardId(UUID.randomUUID().toString());
          return
-             retroBoardRepository.insert(retroBoard).map(AppUtil::RetroBoardEntityToRetroBoardDTO);
+             retroBoardRepository.insert(retroBoard)
+                 .map(retroBoard1 -> "Retro Board for Sprint Number " + retroBoard1.sprintBoardNumber + "created successfully");
 
   }
 }

@@ -33,7 +33,7 @@ public class RetroSectionService {
                 .map(AppUtil::RetroSectionNotesEntityToRetroSectionNotesDTO));
   }
 
-  public Mono<RetroSectionDTO> createRetroSection(Mono<RetroSectionDTO> retroSectionDTO){
+  public Mono<String> createRetroSection(Mono<RetroSectionDTO> retroSectionDTO){
 
     return retroSectionDTO
         .flatMap(
@@ -44,7 +44,7 @@ public class RetroSectionService {
                     .flatMap(
                         exists ->
                             Boolean.TRUE.equals(exists)
-                                ? Mono.error(new Exception("RetroSection Name already taken" ))
+                                ? Mono.just("RetroSection Name already taken")
                                 : createRetroSection(retroSectionDTO1)));
   }
 
@@ -65,7 +65,10 @@ public class RetroSectionService {
           .switchIfEmpty(Mono.error(new Exception("RetroSection not present in this sprint board")))
           .flatMap(
               retroSection -> {
-                retroSection.getSectionNotes().add(AppUtil.RetroSectionNotesDTORetroSectionNotesEntity(retroSectionNotesDTO1));
+                RetroSectionNotes retroSectionNotes = AppUtil.RetroSectionNotesDTORetroSectionNotesEntity(
+                    retroSectionNotesDTO1);
+                retroSectionNotes.setNoteId(UUID.randomUUID().toString());
+                retroSection.getSectionNotes().add(retroSectionNotes);
                   return retroSectionsRepository.save(retroSection).map(retroSection1 -> "Notes added successfully");
       }));
   }
@@ -96,9 +99,7 @@ public class RetroSectionService {
                   Optional<RetroSectionNotes> retroSectionNotesOptional = retroSection.getSectionNotes().stream()
                       .filter(notes -> notes.getNoteId().equals(noteId))
                       .findFirst();
-                  retroSectionNotesOptional.ifPresent(retroSectionNotes1 -> {
-                    retroSectionNotes1.setActive(false);
-                  });
+                  retroSectionNotesOptional.ifPresent(retroSectionNotes1 -> retroSectionNotes1.setActive(false));
                   return retroSectionsRepository.save(retroSection).map(retroSection1 ->
                       "Note deleted successfully");
                 });
@@ -113,12 +114,13 @@ public class RetroSectionService {
        return retroSectionsRepository.save(retroSection).map(AppUtil::RetroSectionEntityToRetroSectionDTO);
   }
 
-  private Mono<RetroSectionDTO> createRetroSection(RetroSectionDTO retroSectionDTO) {
+  private Mono<String> createRetroSection(RetroSectionDTO retroSectionDTO) {
     RetroSection retroSection =
         AppUtil.RetroSectionDTOTORetroSectionEntity(retroSectionDTO);
     retroSection.setSectionId(UUID.randomUUID().toString());
     return
-        retroSectionsRepository.insert(retroSection).map(AppUtil::RetroSectionEntityToRetroSectionDTO);
+        retroSectionsRepository.insert(retroSection).map((retroSection1) -> "Section with Title "
+            + retroSection1.getSectionName() + " for sprint Board "+ retroSection1.getSprintBoardNumber() + "created successfully");
 
   }
 }
