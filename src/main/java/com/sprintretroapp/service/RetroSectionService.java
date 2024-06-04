@@ -119,8 +119,8 @@ public class RetroSectionService {
         AppUtil.RetroSectionDTOTORetroSectionEntity(retroSectionDTO);
     retroSection.setSectionId(UUID.randomUUID().toString());
     return
-        retroSectionsRepository.insert(retroSection).map((retroSection1) -> "Section with Title "
-            + retroSection1.getSectionName() + " for sprint Board "+ retroSection1.getSprintBoardNumber() + "created successfully");
+        retroSectionsRepository.insert(retroSection).map((retroSection1) -> "Retro Section with Title "
+            + retroSection1.getSectionName() + " for sprint Board "+ retroSection1.getSprintBoardNumber() + " created successfully");
 
   }
 }
